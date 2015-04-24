@@ -1,0 +1,8 @@
+# Options +ExecCGI
+
+<Files editor.cgi>
+  AuthUserFile /home/foo/.htpasswd
+  AuthName Studs
+  AuthType Basic
+  require foo
+</Files>

@@ -1,0 +1,46 @@
+@import url(../default.css);
+body{
+  background-color: AntiqueWhite;
+  color: black;
+}
+
+a{
+  color: #000088;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: #0000aa;
+  text-decoration: underline;
+}
+
+.highlight {
+  background-color: lightgray;
+  border: solid #aa9999;
+  border-width: 0px 0px 2px 0px;
+}
+
+
+h1.highlight:after{
+  content: none;
+}
+
+h2.highlight:after{
+  content: none;
+}
+
+h3.highlight:after{
+  content: none;
+}
+
+h1, h2, h3 {
+  font-family: "Hiragino Maru Gothic Pro W4.otf", Osaka, sans-serif;
+  font-weight: bold;
+  line-height: 120%;
+  font-size: 11pt;
+  padding: 0;
+  margin: 0;
+}
+
+
+

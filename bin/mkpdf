@@ -1,0 +1,66 @@
+#!/usr/bin/ruby -EUTF-8
+# -*- mode:Ruby; coding:utf-8 -*-
+
+require 'erb'
+
+$: << "#{File.dirname(__FILE__)}/../"
+require 'lib/studs_parse.rb'
+require 'lib/studs_conf.rb'
+
+conf = Conf.load("studs.conf")
+
+$latex    = conf.platex
+$dvipdfmx = conf.dvipdfmx
+
+def mysystem(cmd)
+  puts cmd
+  system(cmd)
+end
+
+def latex_compile(page_name, src)
+  d = "data/latex/#{page_name}"
+  mysystem("mkdir -p #{d}")
+
+  open("data/latex/#{page_name}/#{page_name}.tex", "w") do |f|
+    f.write(src)
+    f.flush()
+  end
+
+  mysystem("cd #{d}; rm #{page_name}.dvi")
+  mysystem("cd #{d}; rm #{page_name}.pdf")
+
+  mysystem("cd #{d}; #{$latex} #{page_name}.tex")
+  mysystem("cd #{d}; #{$latex} #{page_name}.tex")
+  mysystem("cd #{d}; #{$dvipdfmx} #{page_name}.dvi")
+end
+
+
+def print_page(page_name, conf)
+  data_dir = conf.data_dir
+  lib_dir = conf.lib_dir
+
+  conf.set_page_name(page_name)
+
+  dat = open("#{data_dir}/text/#{page_name}.txt").read
+  title, body_template, stylesheet = parse(dat, conf, :latex)
+  title ||= page_name
+
+  open("data/latex/#{page_name}/body.erb", "w") do |f|
+    f.write(body_template)
+    f.flush()
+  end
+
+  heading1 = '\section*'
+  heading2 = '\subsection*'
+  heading3 = '\subsubsection*'
+
+  body = ERB.new(body_template).result(binding)
+
+  template = open("#{lib_dir}/template/singlepage_latex.erb").read
+  src = ERB.new(template).result(binding)
+
+  latex_compile(page_name, src)
+end
+
+conf = Conf.load('studs.conf')
+print_page(ARGV[0], conf)

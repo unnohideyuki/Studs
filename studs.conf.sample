@@ -1,0 +1,22 @@
+# cite information
+@base_url = 'http://example.com/~foo/studs'
+
+# external programs
+@ebb = "/usr/local/texlive/2014/bin/x86_64-linux/ebb"
+@wget = "/usr/bin/wget --no-check-certificate"
+@convert = "/usr/bin/convert"
+@platex = "/usr/local/texlive/2014/bin/x86_64-linux/platex"
+@dvipdfmx = "/usr/local/texlive/2014/bin/x86_64-linux/dvipdfmx"
+
+# directory names
+@cgi_programs   = ['index.cgi', 'editor.cgi']
+@data_dir       = 'data'
+@lib_dir        = 'lib'
+@plugin_dir     = 'lib/plugin'
+
+# Parameters for Plugins
+
+@plugin_params = {
+               'graphviz:dot' => '/usr/bin/dot'
+               }
+
