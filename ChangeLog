@@ -2,3 +2,4 @@
 
 	* To resolve forward references, run parser twice if exist.
 	* lock/unlock_htmlgen
+	* debug the detection pattern for ordered lists.

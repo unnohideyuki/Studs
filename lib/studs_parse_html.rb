@@ -211,7 +211,7 @@ class ParserHTML
   end
 
   def emit_item(s, punc_mode)
-    s = s.gsub(/^\s*([\*\-\+]|\d[\d\.]*)\s/, '')
+    s = s.gsub(/^\s*([\*\-\+]|\d+(?:\.\d+)*\.)\s/, '')
     s = parse_string(s, punc_mode)
     "<li>#{s}"
   end

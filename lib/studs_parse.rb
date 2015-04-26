@@ -145,7 +145,7 @@ def parse(dat, conf, fmt=:html, obj_labels = nil)
         # nothing
 
       ## list
-      elsif /^\s*([\*\-\+]|\d[\d\.]*)\s/ =~ s
+      elsif /^\s*([\*\-\+]|\d+(?:\.\d+)*\.)\s/ =~ s
         pends = [s]
         m = :list
 
