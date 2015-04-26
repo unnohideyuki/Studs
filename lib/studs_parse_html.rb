@@ -15,9 +15,13 @@ class ParserHTML
     @diary_num_notes = nil
 
     @footnotes = []
+    @unresoleved_reference = false
 
     load_plugins
   end
+
+  attr_reader :unresoleved_reference
+  attr_accessor :obj_labels
 
   def load_plugins
     Dir::glob("lib/plugin/*.rb") do |file|
@@ -69,6 +73,7 @@ class ParserHTML
       if n
         r = "&nbsp;#{n}"
       else
+        @unresoleved_reference = true
         r = "<strong>{<em>Error: label not found: #{k}</em>}</strong>"
       end
     elsif cmd == "eqtag"

@@ -92,12 +92,14 @@ def count_level(s)
 end
 
 
-def parse(dat, conf, fmt=:html)
+def parse(dat, conf, fmt=:html, obj_labels = nil)
   parser = if fmt == :html
              ParserHTML.new(conf)
            else
              ParseLaTeX.new(conf)
            end
+
+  parser.obj_labels = obj_labels if obj_labels
 
   title = nil
   stylesheet = "stylesheets/default.css"
@@ -187,5 +189,11 @@ def parse(dat, conf, fmt=:html)
 
   str += parser.flush_footnotes
 
-  [title, str, stylesheet]
+  labels = if (fmt == :html) && parser.unresoleved_reference
+             parser.obj_labels
+           else
+             nil
+           end
+
+  [title, str, stylesheet, labels]
 end

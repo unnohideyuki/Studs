@@ -1,6 +1,8 @@
 class Conf
   def initialize
     @public = false
+    @page_name = nil
+    @htmlgen_lock = nil
   end
 
   def Conf.load(path)
@@ -34,6 +36,20 @@ class Conf
   def plugin_params
     @plugin_params ||= {}
     @plugin_params
+  end
+
+  def lock_htmlgen
+    raise "page_name not defined" unless @page_name
+
+    lock_file_name = "#{@data_dir}/text/#{@page_name}.htmlgen_lock"
+    
+    @htmlgen_lock = File.open(lock_file_name, 'w')
+    @htmlgen_lock.flock(File::LOCK_EX)
+  end
+
+  def unlock_htmlgen
+    @htmlgen_lock.close if @htmlgen_lock
+    @htmlgen_lock = nil
   end
 
   attr_reader :base_url

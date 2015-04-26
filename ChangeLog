@@ -1,0 +1,4 @@
+2015-04-26  UNNO Hideyuki  <unno.hideyuki@nifty.com>
+
+	* To resolve forward references, run parser twice if exist.
+	* lock/unlock_htmlgen

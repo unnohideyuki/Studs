@@ -25,6 +25,7 @@ require 'lib/studs_mime.rb'
 
 def save_page(page_name, contents, public_mode, data_dir)
   open("#{data_dir}/text/#{page_name}.txt", "w") do |f|
+    f.flock(File::LOCK_EX)
     f.puts(contents)
   end
 
@@ -42,6 +43,7 @@ def save_file(page_name, fname, body, data_dir)
   system ("mkdir -p #{dest}")
 
   open("#{dest}/#{bname}", "w") do |f|
+    f.flock(File::LOCK_EX)
     f.write(body)
   end
 end
@@ -128,10 +130,13 @@ def studs_view(cgi, conf)
     title, body, stylesheet = read_cache(conf, page_name, data_dir)
 
     unless title
+      conf.lock_htmlgen
       dat = open(text_file_path(page_name, data_dir)).read
-      title, body, stylesheet = parse(dat, conf, :html)
+      title, body, stylesheet, labels = parse(dat, conf, :html)
+      title, body, stylesheet, x = parse(dat, conf, :html, labels) if labels
       title ||= page_name
       write_cache(conf, page_name, data_dir, title, body, stylesheet)
+      conf.unlock_htmlgen
     end
 
     mt = get_mtime(page_name, data_dir).httpdate
@@ -254,9 +259,13 @@ def studs_save(cgi, conf)
   cgi_url = conf.cgi_url
 
   page_name = params["page"][0]
-
   contents  = params["contents"][0]
+
+  conf.set_page_name(page_name)
+  conf.lock_htmlgen
   save_page(page_name, contents, params["public_mode"][0], data_dir)
+  conf.unlock_htmlgen
+
   makepdf(page_name, data_dir)
 
   template = open("lib/template/saving_html.erb").read
