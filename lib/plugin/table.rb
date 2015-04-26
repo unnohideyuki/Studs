@@ -74,27 +74,22 @@ class TabularParser
 
   def emit(punc_mode)
     ret = "<div class=\"table\"><div class=\"tabular\">"
-    
-    if @opts["summary"]
-      ret += "<table summary=\"#{@opts["summary"]}\"\n>"
-    else
-      ret += "<table\n>"
-    end
+    ret << "<table\n>"
 
     if @opts["caption"]
       num = @parent.new_object_number
 
-      ret += "<caption><strong>\u8868 #{num}: </strong\n>"
-      ret += "#{@opts["caption"]}</caption\n>"
+      ret << "<caption><strong>\u8868 #{num}: </strong\n>"
+      ret << "#{@opts["caption"]}</caption\n>"
 
       if @opts["label"]
         @parent.insert_label(@opts["label"], num)
       end
     end
-    
+
     @tab.each_with_index do |cells, i|
       row = i + 1
-      ret += "<tr>"
+      ret << "<tr>"
       cells.each_with_index do |s, j|
         col = j + 1
         u = takebd("h#{row - 1}_#{col    }")
@@ -106,11 +101,11 @@ class TabularParser
         clsstr = a[l] + @cols[col-1] + a[r] + "#{u}#{d}"
 
         s = @parent.parse_string(s, punc_mode)
-        ret += "<td class=\"#{clsstr}\">#{s}</td\n>"
+        ret << "<td class=\"#{clsstr}\">#{s}</td\n>"
       end
-      ret += "</tr>"
+      ret << "</tr>"
     end
-    ret += "</table></div></div\n>"
+    ret << "</table></div></div\n>"
     ret
   end
 end
