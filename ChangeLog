@@ -1,3 +1,7 @@
+2015-05-01  UNNO Hideyuki  <unno.hideyuki@nifty.com>
+
+	* change protocol from http to https to access MathJax.
+
 2015-04-26  UNNO Hideyuki  <unno.hideyuki@nifty.com>
 
 	* To resolve forward references, run parser twice if exist.
