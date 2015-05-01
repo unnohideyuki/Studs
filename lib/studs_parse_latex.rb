@@ -17,7 +17,7 @@ class ParseLaTeX
 
   def heading(lv, arg, n)
     r = "<%= heading#{lv > 3 ? 3 : lv} %>"
-    
+
     if /\s*(\d\d\d\d-\d\d-\d\d)\s*/ =~ arg
       arg = DateTime.parse($1).strftime("%Y-%m-%d (%a)")
     end
@@ -25,7 +25,7 @@ class ParseLaTeX
     r << "{#{escapeLaTeX2(arg.strip)}}\n"
     r
   end
-  
+
   def inline_cmd(cmd, arg)
     case cmd 
     when "ref"
@@ -232,7 +232,7 @@ class ParseLaTeX
     extname = File.extname(n)
     fname = "image#{@iimgnum}#{extname}"
     @iimgnum += 1
-    
+
     page_name = @conf.page_name
     data_dir = @conf.data_dir
     wget = @conf.wget
@@ -242,6 +242,7 @@ class ParseLaTeX
     dest = "#{data_dir}/latex/#{page_name}/intimg"
     system("mkdir -p #{dest}")
     system("cp #{src}/#{n} #{dest}/#{fname}")
+    system("cd #{dest}; #{ebb} -x  #{fname}")
 
     "\\includegraphics[scale=0.5]{intimg/#{fname}}"
   end
