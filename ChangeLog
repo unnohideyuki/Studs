@@ -1,6 +1,7 @@
 2015-05-08  UNNO Hideyuki  <unno.hideyuki@nifty.com>
 
 	* replaced {index|editor}.cgi with <%= cgi_url %> in menu templates.
+	* hide debug_info from public-mode.
 
 2015-05-01  UNNO Hideyuki  <unno.hideyuki@nifty.com>
 

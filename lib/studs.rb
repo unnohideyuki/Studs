@@ -1,9 +1,9 @@
 STUDS_VERSION = "0.1"
 
-STUDS_COMMANDS = [ "view", 
+STUDS_COMMANDS = [ "view",
                  "edit",
-                 "save", 
-                 "new",  
+                 "save",
+                 "new",
                  "pages",
                  "src",
                  "texraw",
@@ -11,8 +11,8 @@ STUDS_COMMANDS = [ "view",
                  "log1",
                  "log2",
                  "dbg",
-                 "dvi", 
-                 "pdf", 
+                 "dvi",
+                 "pdf",
                  "dl",
                  "upload"
                  ]
@@ -89,7 +89,7 @@ def debug_info(cgi, page_name, data_dir)
   pdfdate = nil
   log1date = nil
   log2date = nil
-  
+
   open(tex){|f| texdate = f.mtime.httpdate} if File.exist?(tex)
   open(dvi){|f| dvidate = f.mtime.httpdate} if File.exist?(dvi)
   open(pdf){|f| pdfdate = f.mtime.httpdate} if File.exist?(pdf)
@@ -401,6 +401,8 @@ def studs_pdf(cgi, conf)
               "Content-Disposition" => "attachment; filename*=US-ASCII''#{page_name}.pdf",
               "Last-Modified" => mt
               ) { dat }
+    elsif conf.public
+      cgi.out("status" => "NOT_FOUND") {"Page Not Found"}
     else
       debug_info(cgi, page_name, data_dir)
     end
