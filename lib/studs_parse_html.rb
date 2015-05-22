@@ -158,7 +158,7 @@ class ParserHTML
             if /^http/ =~ url
               s  = "<a href=\"#{url}\">"
             else
-              s  = "<a href=\"#{@conf.cgi_url}?page=#{url}\">"
+              s  = "<a href=\"#{@conf.cgi_url}/#{@conf.lang}/#{url}\">"
             end
             s += parse_string(txt, punc_mode)
             s += "</a>"

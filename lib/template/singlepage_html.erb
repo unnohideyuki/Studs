@@ -2,16 +2,16 @@
 <html lang="ja">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <script type="text/javascript" src="highlight.js"></script>
+  <script type="text/javascript" src="<%= base_url %>/highlight.js"></script>
   <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
+    MathJax.Hub.Config({ 
       TeX: { extensions: ["AMSmath.js", "AMSsymbols.js", "extpfeil.js"] }
     });
   </script>
   <script type="text/javascript"
-          src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default.js">
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default.js">
   </script>
-  <link rel="stylesheet" href="<%= stylesheet %>" type="text/css" media="all" />
+  <link rel="stylesheet" href="<%= base_url %>/<%= stylesheet %>" type="text/css" media="all" />
   <title><%= title %></title>
 </head>
 <body>

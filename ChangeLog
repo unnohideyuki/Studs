@@ -1,3 +1,7 @@
+2015-05-22  UNNO Hideyuki  <unno.hideyuki@nifty.com>
+
+	* new url style including lang in it.
+
 2015-05-08  UNNO Hideyuki  <unno.hideyuki@nifty.com>
 
 	* replaced {index|editor}.cgi with <%= cgi_url %> in menu templates.

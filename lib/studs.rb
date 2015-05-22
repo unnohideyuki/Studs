@@ -14,7 +14,8 @@ STUDS_COMMANDS = [ "view",
                  "dvi",
                  "pdf",
                  "dl",
-                 "upload"
+                 "upload",
+                 "trampoline"
                  ]
 
 require 'cgi'
@@ -111,13 +112,53 @@ def page_visible?(conf, page_name)
   page_exist and page_permission
 end
 
+def page_from_path(conf)
+  path_info = ENV['PATH_INFO']
+
+  if %r|/(\w\w)/(.+)| =~ path_info
+    lang = $1
+    pg = $2
+    data_dir = conf.data_dir
+
+    page_name1 = "#{lang}__#{pg}"
+    page_name2, page_name3 = if lang == 'ja'
+                   ["#{pg}", "en__#{pg}"]
+                 else
+                   ["en__#{pg}", "#{pg}"]
+                 end
+
+    if File.exist?("#{data_dir}/text/#{page_name1}.txt")
+      page_name1
+    elsif File.exist?("#{data_dir}/text/#{page_name2}.txt")
+      page_name2
+    else
+      page_name3
+    end
+  else
+    nil
+  end
+end
+
+def lang_from_path
+  if %r|/(\w\w)/.+| =~ ENV['PATH_INFO']
+    $1
+  else
+    'en'
+  end
+end
+
 def studs_view(cgi, conf)
   params = cgi.params
   data_dir = conf.data_dir
   cgi_url = conf.cgi_url
+  base_url = conf.base_url
 
-  page_name = params["page"][0] || "FrontPage"
+  page_name = params["page"][0] || page_from_path(conf)
+  studs_trampoline(cgi, conf) unless page_name
+
+  lang = lang_from_path
   conf.set_page_name(page_name)
+  conf.set_lang(lang)
 
   menu_template = if conf.public
                     open("lib/template/public_menu_html.erb").read
@@ -454,12 +495,27 @@ def studs_upload(cgi, conf)
   cgi.out { html }
 end
 
+def studs_trampoline(cgi, conf)
+  cgi_url = conf.cgi_url
+  lib_dir = conf.lib_dir
+  template = open("#{lib_dir}/template/trampoline.erb").read
+  html = ERB.new(template).result(binding)
+  cgi.out { html }
+end
+
 def cmd_check(cmd)
   raise "illegal command: #{cmd}"  unless STUDS_COMMANDS.include?(cmd)
 end
 
 def cgi_main(cgi, conf)
   params = cgi.params
+  path_info = ENV['PATH_INFO']
+
+  if path_info && path_info == "/"
+    params = params.dup
+    params["cmd"] = params["cmd"].dup
+    params["cmd"][0] = "trampoline"
+  end
 
   cmd = if cgi.multipart?
           params["cmd"][0].read

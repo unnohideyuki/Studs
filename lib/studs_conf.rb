@@ -52,6 +52,10 @@ class Conf
     @htmlgen_lock = nil
   end
 
+  def set_lang(lang)
+    @lang = lang
+  end
+
   attr_reader :base_url
   attr_reader :data_dir
   attr_reader :lib_dir
@@ -63,4 +67,5 @@ class Conf
   attr_reader :platex
   attr_reader :dvipdfmx
   attr_reader :public
+  attr_reader :lang
 end
