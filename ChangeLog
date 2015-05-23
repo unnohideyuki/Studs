@@ -1,3 +1,8 @@
+2015-05-23  UNNO Hideyuki  <unno.hideyuki@nifty.com>
+
+	* Redo the change to protocol from http to https to access MathJax that I rewinded as a mistake.
+	* relative path for interal links.
+
 2015-05-22  UNNO Hideyuki  <unno.hideyuki@nifty.com>
 
 	* new url style including lang in it.

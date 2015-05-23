@@ -155,11 +155,7 @@ class ParserHTML
               s = "<img src=\"#{@conf.cgi_url}?page=#{@conf.page_name}&amp;cmd=dl&amp;n=#{url}\" alt=\"#{alt}\" title=\"#{alt}\"/>"
             end
           else
-            if /^http/ =~ url
-              s  = "<a href=\"#{url}\">"
-            else
-              s  = "<a href=\"#{@conf.cgi_url}/#{@conf.lang}/#{url}\">"
-            end
+            s  = "<a href=\"#{url}\">"
             s += parse_string(txt, punc_mode)
             s += "</a>"
           end
