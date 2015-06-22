@@ -13,10 +13,11 @@ def math_block_html(content, punc_mode)
 
   dest = "#{data_dir}/attach/#{page_name}/math"
   system("mkdir -p #{dest}")
-  system("rm -f #{dest}/*")
 
   fname = "math#{@plugin_math_n}"
   @plugin_math_n += 1
+
+  system("rm -f #{dest}/#{fname}.*")
 
   template = File.read("#{plugin_dir}/template/math_block_html.erb")
   tex = ERB.new(template).result(binding)
