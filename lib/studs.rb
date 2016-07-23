@@ -1,9 +1,9 @@
 STUDS_VERSION = "0.1"
 
-STUDS_COMMANDS = [ "view",
+STUDS_COMMANDS = [ "view", 
                  "edit",
-                 "save",
-                 "new",
+                 "save", 
+                 "new",  
                  "pages",
                  "src",
                  "texraw",
@@ -11,8 +11,8 @@ STUDS_COMMANDS = [ "view",
                  "log1",
                  "log2",
                  "dbg",
-                 "dvi",
-                 "pdf",
+                 "dvi", 
+                 "pdf", 
                  "dl",
                  "upload",
                  "trampoline"
@@ -90,7 +90,7 @@ def debug_info(cgi, page_name, data_dir)
   pdfdate = nil
   log1date = nil
   log2date = nil
-
+  
   open(tex){|f| texdate = f.mtime.httpdate} if File.exist?(tex)
   open(dvi){|f| dvidate = f.mtime.httpdate} if File.exist?(dvi)
   open(pdf){|f| pdfdate = f.mtime.httpdate} if File.exist?(pdf)
@@ -143,7 +143,7 @@ def lang_from_path
   if %r|/(\w\w)/.+| =~ ENV['PATH_INFO']
     $1
   else
-    'en'
+    'ja'
   end
 end
 
@@ -154,11 +154,12 @@ def studs_view(cgi, conf)
   base_url = conf.base_url
 
   page_name = params["page"][0] || page_from_path(conf)
+
   studs_trampoline(cgi, conf) unless page_name
 
   lang = lang_from_path
-  conf.set_page_name(page_name)
   conf.set_lang(lang)
+  conf.set_page_name(page_name)
 
   menu_template = if conf.public
                     open("lib/template/public_menu_html.erb").read
@@ -442,8 +443,6 @@ def studs_pdf(cgi, conf)
               "Content-Disposition" => "attachment; filename*=US-ASCII''#{page_name}.pdf",
               "Last-Modified" => mt
               ) { dat }
-    elsif conf.public
-      cgi.out("status" => "NOT_FOUND") {"Page Not Found"}
     else
       debug_info(cgi, page_name, data_dir)
     end
